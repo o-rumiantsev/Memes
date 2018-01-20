@@ -1,0 +1,27 @@
+{
+  "name": "memes",
+  "version": "1.0.0",
+  "description": "Memes Time backend",
+  "main": "main.js",
+  "scripts": {
+    "test": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/o-rumiantsev/Memes.git"
+  },
+  "keywords": [
+    "memes"
+  ],
+  "author": "o-rumiantsev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/o-rumiantsev/Memes/issues"
+  },
+  "homepage": "https://github.com/o-rumiantsev/Memes#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1",
+    "npm": "^5.6.0"
+  }
+}
