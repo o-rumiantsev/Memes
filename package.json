@@ -1,7 +1,7 @@
 {
   "name": "memes",
   "version": "1.0.0",
-  "description": "Memes Time backend",
+  "description": "Memes Time",
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
