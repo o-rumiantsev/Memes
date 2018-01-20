@@ -4,6 +4,7 @@
   "description": "Memes Time backend",
   "main": "main.js",
   "scripts": {
+    "start": "node main.js",
     "test": "eslint"
   },
   "repository": {
