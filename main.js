@@ -19,10 +19,9 @@ app.get('/', (req, res) => {
 
 
 app.post('/getMemes', (req, res) => {
-  console.log(req.body);
   const sessionId = req.body.sessionId;
   recieveMemesFromUser(req, (err) => {
-    if (err) res.send(err);
+    if (err) console.error(err);
     else sendMemes(res, sessionId);
   });
 });
@@ -31,8 +30,10 @@ app.listen(3000, '0.0.0.0');
 
 function sendMemes(res, sessionId) {
   getMemesFromDb(sessionId, (err, memes) => {
-    if (err) res.status(500).send(err).end();
-    else {
+    if (err) {
+      console.error(err);
+      res.status(500).end();
+    } else {
       const frontMemes = memes.map(
         (meme) => ({
           _id: meme._id,
