@@ -5,10 +5,10 @@ const recieveMemesFromUser = require('../lib/recieveMemesFromUser.js');
 
 const req = {
   body: {
-    sessionId: '12345',
+    sessionId: '646dd9af-590a-449c-a6c4-37996ad57e3c',
     data: [
-      { _id: '5a66f193ac297d5e485e09ba', clicked: true },
-      { _id: '5a66f193ac297d5e485e09bc', clicked: false }
+      { _id: '5a66f2dbfedeb86104b93de6', clicked: true },
+      { _id: '5a66f2dbfedeb86104b93de8', clicked: true }
     ]
   }
 };
