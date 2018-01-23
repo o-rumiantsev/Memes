@@ -20,6 +20,16 @@ app.get('/', (req, res) => {
   res.send('Here will be our Meme Time');
 });
 
+app.post('/handleRegistationRequest', (req, res) => {
+  const credentials = req.body.credentials;
+  auth.register(credentials, (err, sessionId) => {
+    if (err) {
+      res.sendStatus(500);
+      log.error(err);
+    } else res.send(sessionId);
+  });
+});
+
 app.post('/login', (req, res) => {
   const credentials = req.body.credentials;
   auth.enticate(credentials, (err, authenticated) => {
