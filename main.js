@@ -44,11 +44,16 @@ app.post('/handleRegistation', (req, res) => {
   const credentials = req.body.credentials;
   auth.register(credentials, (err, sessionId) => {
     if (err) {
-      res.sendStatus(500);
-      log.error(err);
+      if (err.message === 'Username already exist') {
+        res.status(500).send(err);
+        log.error(err);
+      } else {
+        res.sendStatus(500);
+        log.error(err);
+      }
     } else {
       res.send(sessionId);
-      setTimeout(() => clearSession(sessionId), SESSION_DELAY);
+      setTimeout(() => clearSession(sessionId, SESSION_DELAY), SESSION_DELAY);
     }
   });
 });
