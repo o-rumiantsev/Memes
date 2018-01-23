@@ -2,9 +2,12 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const auth = require('./lib/auth.js');
+const log = require('./lib/log.js');
 const getMemesFromDb = require('./lib/getMemesFromDb.js');
 const recieveMemesFromUser = require('./lib/recieveMemesFromUser.js');
 const app = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -17,13 +20,23 @@ app.get('/', (req, res) => {
   res.send('Here will be our Meme Time');
 });
 
+app.post('/login', (req, res) => {
+  const credentials = req.body.credentials;
+  auth.enticate(credentials, (err, authenticated) => {
+    if (err) {
+      res.sendStatus(500);
+      log.error(err);
+    } else res.send(authenticated);
+  });
+});
 
 app.post('/getMemes', (req, res) => {
   const sessionId = req.body.sessionId;
-  recieveMemesFromUser(req, (err) => {
-    if (err) console.error(err);
+  if (req.body.data) recieveMemesFromUser(req, (err) => {
+    if (err) log.error(err);
     else sendMemes(res, sessionId);
   });
+  else sendMemes(res, sessionId);
 });
 
 app.listen(3000, '0.0.0.0');
@@ -31,7 +44,7 @@ app.listen(3000, '0.0.0.0');
 function sendMemes(res, sessionId) {
   getMemesFromDb(sessionId, (err, memes) => {
     if (err) {
-      console.error(err);
+      log.error(err);
       res.status(500).end();
     } else {
       const frontMemes = memes.map(
