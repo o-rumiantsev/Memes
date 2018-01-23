@@ -7,8 +7,8 @@ const req = {
   body: {
     sessionId: '12345',
     data: [
-      { _id: '5a6656c88a9c534d590b2f2a', clicked: true },
-      { _id: '5a6656c88a9c534d590b2f26', clicked: false }
+      { _id: '5a66f193ac297d5e485e09ba', clicked: true },
+      { _id: '5a66f193ac297d5e485e09bc', clicked: false }
     ]
   }
 };
