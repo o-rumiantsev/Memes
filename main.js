@@ -2,10 +2,15 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const auth = require('./lib/auth.js');
 const log = require('./lib/log.js');
+const getMemesStats = require('./lib/getMemesStats.js');
 const getMemesFromDb = require('./lib/getMemesFromDb.js');
 const recieveMemesFromUser = require('./lib/recieveMemesFromUser.js');
+const clearSession = require('./lib/clearSession.js');
+const SESSION_DELAY = 1800000;
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -16,19 +21,39 @@ app.use(bodyParser.urlencoded({
 app.use(express.json());
 app.use(express.urlencoded());
 
+
+
 app.get('/', (req, res) => {
   res.send('Here will be our Meme Time');
 });
 
-app.post('/handleRegistationRequest', (req, res) => {
+
+
+app.get('/getMemesStats', (req, res) => {
+  getMemesStats((err, memes) => {
+    if (err) {
+      res.sendStatus(500);
+      log.error(err);
+    } else res.json({ memes });
+  });
+});
+
+
+
+app.post('/handleRegistation', (req, res) => {
   const credentials = req.body.credentials;
   auth.register(credentials, (err, sessionId) => {
     if (err) {
       res.sendStatus(500);
       log.error(err);
-    } else res.send(sessionId);
+    } else {
+      res.send(sessionId);
+      setTimeout(() => clearSession(sessionId), SESSION_DELAY);
+    }
   });
 });
+
+
 
 app.post('/login', (req, res) => {
   const credentials = req.body.credentials;
@@ -36,9 +61,14 @@ app.post('/login', (req, res) => {
     if (err) {
       res.sendStatus(500);
       log.error(err);
-    } else res.send(authenticated);
+    } else {
+      res.json({ authenticated });
+      setTimeout(() => clearSession(authenticated.sessionId), SESSION_DELAY);
+    }
   });
 });
+
+
 
 app.post('/getMemes', (req, res) => {
   const sessionId = req.body.sessionId;
@@ -47,7 +77,10 @@ app.post('/getMemes', (req, res) => {
     else sendMemes(res, sessionId);
   });
   else sendMemes(res, sessionId);
+  setTimeout(() => clearSession(sessionId), SESSION_DELAY);
 });
+
+
 
 app.listen(3000, '0.0.0.0');
 
