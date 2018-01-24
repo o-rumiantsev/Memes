@@ -9,6 +9,7 @@ const getMemesStats = require('./lib/getMemesStats.js');
 const getMemesFromDb = require('./lib/getMemesFromDb.js');
 const recieveMemesFromUser = require('./lib/recieveMemesFromUser.js');
 const clearSession = require('./lib/clearSession.js');
+const updateDb = require('./lib/updateDb.js');
 const SESSION_DELAY = 10000;
 
 const app = express();
@@ -73,7 +74,9 @@ app.post('/loginVerify', (req, res) => {
       log.error(err);
     } else {
       res.json({ authenticated });
-      setTimeout(() => clearSession(authenticated.sessionId, SESSION_DELAY), SESSION_DELAY);
+      setTimeout(() =>
+        clearSession(authenticated.sessionId, SESSION_DELAY),
+      SESSION_DELAY);
     }
   });
 });
@@ -85,8 +88,8 @@ app.post('/getMemes', (req, res) => {
   const sessionId = req.body.sessionId;
   if (req.body.data) recieveMemesFromUser(req, (err) => {
     if (err) {
-     res.json({ error: true, message: err.message});
-     log.error(err);
+      res.json({ error: true, message: err.message });
+      log.error(err);
     } else sendMemes(res, sessionId);
   });
   else sendMemes(res, sessionId);
@@ -97,7 +100,10 @@ app.post('/updateMemesDb', (req, res) => {
   const sessionId = req.body.sessionId;
   auth.checkAvailability(sessionId, (err) => {
     if (err) res.sendStatus(500);
-    else res.sendStatus(200);
+    else {
+      res.sendStatus(200);
+      updateDb();
+    }
   });
 });
 
