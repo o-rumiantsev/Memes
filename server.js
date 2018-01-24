@@ -9,7 +9,7 @@ const getMemesStats = require('./lib/getMemesStats.js');
 const getMemesFromDb = require('./lib/getMemesFromDb.js');
 const recieveMemesFromUser = require('./lib/recieveMemesFromUser.js');
 const clearSession = require('./lib/clearSession.js');
-const SESSION_DELAY = 1800000;
+const SESSION_DELAY = 10000;
 
 const app = express();
 
@@ -24,12 +24,14 @@ app.use(express.urlencoded());
 
 
 app.get('/', (req, res) => {
+  console.log('/');
   res.send('Here will be our Meme Time');
 });
 
 
 
 app.get('/getMemesStats', (req, res) => {
+  console.log('/getMemesStats');
   getMemesStats((err, memes) => {
     if (err) {
       res.sendStatus(500);
@@ -40,19 +42,21 @@ app.get('/getMemesStats', (req, res) => {
 
 
 
-app.post('/handleRegistation', (req, res) => {
+app.post('/handleRegistration', (req, res) => {
+  console.log('/handleRegistration');
   const credentials = req.body.credentials;
-  auth.register(credentials, (err, sessionId) => {
+  auth.register(credentials, (err, registrated) => {
     if (err) {
       if (err.message === 'Username already exist') {
-        res.status(500).send(err);
+        res.status(500).json(err);
         log.error(err);
       } else {
         res.sendStatus(500);
         log.error(err);
       }
     } else {
-      res.send(sessionId);
+      res.send(registrated);
+      const sessionId = registrated.sessionId;
       setTimeout(() => clearSession(sessionId, SESSION_DELAY), SESSION_DELAY);
     }
   });
@@ -60,7 +64,8 @@ app.post('/handleRegistation', (req, res) => {
 
 
 
-app.post('/login', (req, res) => {
+app.post('/loginVerify', (req, res) => {
+  console.log('/loginVerify');
   const credentials = req.body.credentials;
   auth.enticate(credentials, (err, authenticated) => {
     if (err) {
@@ -68,7 +73,7 @@ app.post('/login', (req, res) => {
       log.error(err);
     } else {
       res.json({ authenticated });
-      setTimeout(() => clearSession(authenticated.sessionId), SESSION_DELAY);
+      setTimeout(() => clearSession(authenticated.sessionId, SESSION_DELAY), SESSION_DELAY);
     }
   });
 });
@@ -76,13 +81,15 @@ app.post('/login', (req, res) => {
 
 
 app.post('/getMemes', (req, res) => {
+  console.log('/getMemes');
   const sessionId = req.body.sessionId;
   if (req.body.data) recieveMemesFromUser(req, (err) => {
-    if (err) log.error(err);
-    else sendMemes(res, sessionId);
+    if (err) {
+     res.json({ error: true, message: err.message});
+     log.error(err);
+    } else sendMemes(res, sessionId);
   });
   else sendMemes(res, sessionId);
-  setTimeout(() => clearSession(sessionId), SESSION_DELAY);
 });
 
 
@@ -92,8 +99,8 @@ app.listen(80, '0.0.0.0');
 function sendMemes(res, sessionId) {
   getMemesFromDb(sessionId, (err, memes) => {
     if (err) {
+      res.json({ error: true, message: err.message });
       log.error(err);
-      res.status(500).end();
     } else {
       const frontMemes = memes.map(
         (meme) => ({
@@ -102,6 +109,7 @@ function sendMemes(res, sessionId) {
         })
       );
       res.json({ frontMemes }).end();
+      setTimeout(() => clearSession(sessionId, SESSION_DELAY), SESSION_DELAY);
     }
   });
 }
