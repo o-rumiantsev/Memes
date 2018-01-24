@@ -10,9 +10,12 @@ const getMemesFromDb = require('./lib/getMemesFromDb.js');
 const recieveMemesFromUser = require('./lib/recieveMemesFromUser.js');
 const clearSession = require('./lib/clearSession.js');
 const updateDb = require('./lib/updateDb.js');
+const insertAdmin = require('./lib/insertAdmin.js');
 const SESSION_DELAY = 1800000;
 
 const app = express();
+insertAdmin();
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
