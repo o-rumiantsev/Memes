@@ -6,7 +6,7 @@ const log = require('../lib/log.js');
 const req = {
   body: {
     credentials: {
-      login: 'Maksim',
+      login: 'Oleksii',
       password: '1111'
     }
   }
@@ -15,11 +15,11 @@ const req = {
 
 const appPost = (req) => {
   const credentials = req.body.credentials;
-  auth.register(credentials, (err, sessionId) => {
+  auth.register(credentials, (err, registered) => {
     if (err) {
       // res.sendStatus(500);
       log.error(err);
-    } else  console.log(sessionId); //res.send(authenticated);
+    } else  console.log(registered); //res.send(registered);
   });
 };
 

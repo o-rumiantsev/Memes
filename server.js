@@ -10,7 +10,7 @@ const getMemesFromDb = require('./lib/getMemesFromDb.js');
 const recieveMemesFromUser = require('./lib/recieveMemesFromUser.js');
 const clearSession = require('./lib/clearSession.js');
 const updateDb = require('./lib/updateDb.js');
-const SESSION_DELAY = 10000;
+const SESSION_DELAY = 1800000;
 
 const app = express();
 
@@ -94,6 +94,8 @@ app.post('/getMemes', (req, res) => {
   });
   else sendMemes(res, sessionId);
 });
+
+
 
 app.post('/updateMemesDb', (req, res) => {
   console.log('/updateMemesDb');
