@@ -1,25 +1,25 @@
 ## `/`
-**Request method:** `GET`,
+Request method: `GET`,
 
-**Request body:** *none*,
+Request body: *none*,
 
-**Response data:** HTML page.
+Response data: HTML page.
 
 
 
 ## `/getMemesStats`
-**Request method:** `GET`,
+Request method: `GET`,
 
-**Request body:** *none*,
+Request body:** *none*,
 
-**Response data:** Array of memes with non-zero rating.
+Response data: Array of memes with non-zero rating.
 
 
 
 ## `/handleRegistration`
-**Request method:** `POST`,
+Request method: `POST`,
 
-**Request body:**
+Request body:
 ```javascript
 {
   credentials: {
@@ -29,14 +29,14 @@
 }
 ```
 
-**Response data:** `sessionId`.
+Response data: `sessionId`.
 
 
 
 ## `/login`
-**Request method:** `POST`,
+Request method: `POST`,
 
-**Request body:**
+Request body:
 ```javascript
 {
   credentials: {
@@ -46,7 +46,7 @@
 }
 ```
 
-**Response data:**
+Response data:
 ```javascript
 {
   sessionId: 'string',
@@ -57,9 +57,9 @@
 
 
 ## `/getMemes`
-**Request method:** `POST`,
+Request method: `POST`,
 
-**Request body:**
+Request body:
 ```javascript
 {
   sessionId: 'string',
@@ -70,4 +70,4 @@
 }
 ```
 
-**Response data:** Array of two random memes(`url` and `_id`).
+Response data: Array of two random memes(`url` and `_id`).
