@@ -28,13 +28,21 @@ app.use(bodyParser.urlencoded({
 app.use(express.json());
 app.use(express.urlencoded());
 
-
-
 app.get('/', (req, res) => {
-  res.redirect('/index.html');
+  res.sendFile('/root/memes/static/index.html');
 });
 
+app.get('/stats', (req, res) => {
+  res.sendFile('/root/memes/static/index.html');
+});
 
+app.get('/login', (req, res) => {
+  res.sendFile('/root/memes/static/index.html');
+});
+
+app.get('/registration', (req, res) => {
+  res.sendFile('/root/memes/static/index.html');
+});
 
 app.get('/getMemesStats', (req, res) => {
   getMemesStats((err, memes) => {
