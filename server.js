@@ -13,8 +13,12 @@ const updateDb = require('./lib/updateDb.js');
 const insertAdmin = require('./lib/insertAdmin.js');
 const SESSION_DELAY = 1800000;
 
+const fs = require('fs');
+const page = fs.readFileSync('./static/index.html');
+
 const app = express();
 insertAdmin();
+
 
 
 app.use(bodyParser.json());
@@ -28,14 +32,12 @@ app.use(express.urlencoded());
 
 
 app.get('/', (req, res) => {
-  console.log('/');
-  res.send('Here will be our Meme Time');
+  res.send(page);
 });
 
 
 
 app.get('/getMemesStats', (req, res) => {
-  console.log('/getMemesStats');
   getMemesStats((err, memes) => {
     if (err) {
       res.sendStatus(500);
@@ -47,7 +49,6 @@ app.get('/getMemesStats', (req, res) => {
 
 
 app.post('/handleRegistration', (req, res) => {
-  console.log('/handleRegistration');
   const credentials = req.body.credentials;
   auth.register(credentials, (err, registrated) => {
     if (err) {
@@ -69,7 +70,6 @@ app.post('/handleRegistration', (req, res) => {
 
 
 app.post('/loginVerify', (req, res) => {
-  console.log('/loginVerify');
   const credentials = req.body.credentials;
   auth.enticate(credentials, (err, authenticated) => {
     if (err) {
@@ -87,7 +87,6 @@ app.post('/loginVerify', (req, res) => {
 
 
 app.post('/getMemes', (req, res) => {
-  console.log('/getMemes');
   const sessionId = req.body.sessionId;
   if (req.body.data) recieveMemesFromUser(req, (err) => {
     if (err) {
@@ -101,7 +100,6 @@ app.post('/getMemes', (req, res) => {
 
 
 app.post('/updateMemesDb', (req, res) => {
-  console.log('/updateMemesDb');
   const sessionId = req.body.sessionId;
   auth.checkAvailability(sessionId, (err) => {
     if (err) res.sendStatus(500);
