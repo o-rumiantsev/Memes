@@ -92,7 +92,14 @@ app.post('/getMemes', (req, res) => {
   else sendMemes(res, sessionId);
 });
 
-
+app.post('/updateMemesDb', (req, res) => {
+  console.log('/updateMemesDb');
+  const sessionId = req.body.sessionId;
+  auth.checkAvailability(sessionId, (err) => {
+    if (err) res.sendStatus(500);
+    else res.sendStatus(200);
+  });
+});
 
 app.listen(80, '0.0.0.0');
 
