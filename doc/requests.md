@@ -10,7 +10,7 @@ Response data: HTML page.
 ## `/getMemesStats`
 Request method: `GET`,
 
-Request body:** *none*,
+Request body: *none*,
 
 Response data: Array of memes with non-zero rating.
 
@@ -71,3 +71,17 @@ Request body:
 ```
 
 Response data: Array of two random memes(`url` and `_id`).
+
+
+
+## `/updateMemesDb`
+Request method: `POST`,
+
+Request body:
+```javascript
+{
+  sessionId: 'string',
+}
+```
+
+Response data: Status code(`200` or `500`).
