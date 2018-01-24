@@ -25,4 +25,4 @@ user {
   sessionId: 'string',
   lastRequest: 'number'
 }
-``
+```
