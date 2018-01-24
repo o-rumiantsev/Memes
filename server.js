@@ -87,7 +87,7 @@ app.post('/getMemes', (req, res) => {
 
 
 
-app.listen(3000, '0.0.0.0');
+app.listen(80, '0.0.0.0');
 
 function sendMemes(res, sessionId) {
   getMemesFromDb(sessionId, (err, memes) => {
