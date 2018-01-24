@@ -2,9 +2,9 @@
   "name": "memes",
   "version": "1.0.0",
   "description": "Memes Time",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "./server.sh",
     "test": "eslint"
   },
   "repository": {
