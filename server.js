@@ -13,13 +13,12 @@ const updateDb = require('./lib/updateDb.js');
 const insertAdmin = require('./lib/insertAdmin.js');
 const SESSION_DELAY = 1800000;
 
-const fs = require('fs');
-const page = fs.readFileSync('./static/index.html');
-
 const app = express();
+app.use(express.static('static'));
 insertAdmin();
-
-
+updateDb((err) => {
+  if (err) log.error(err)
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -32,7 +31,7 @@ app.use(express.urlencoded());
 
 
 app.get('/', (req, res) => {
-  res.send(page);
+  res.redirect('/index.html');
 });
 
 
@@ -105,7 +104,9 @@ app.post('/updateMemesDb', (req, res) => {
     if (err) res.sendStatus(500);
     else {
       res.sendStatus(200);
-      updateDb();
+      updateDb((err) => {
+        if (err) log.error(err);
+      });
     }
   });
 });
